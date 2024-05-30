@@ -95,11 +95,38 @@ public class PlayerController : MonoBehaviour
 
     public void Tray(GameObject _placePoint)
     {
-        if (activeInteractable != null && _placePoint.transform.childCount == 0)
+        /*if (activeInteractable != null && _placePoint.transform.childCount == 0)
         {
             activeInteractable.transform.SetParent(_placePoint.transform);
             activeInteractable.transform.position = _placePoint.transform.position;
             activeInteractable = null;
+        }
+        else if (activeInteractable == null && _placePoint.transform.childCount == 1)
+        {
+            activeInteractable = _placePoint.transform.GetChild(0).gameObject;
+            activeInteractable.transform.SetParent(holdingPoint.transform);
+            activeInteractable.transform.position = holdingPoint.transform.position;
+        }*/
+
+        if (activeInteractable != null)
+        {
+            if (_placePoint.transform.childCount == 0)
+            {
+                activeInteractable.transform.SetParent(_placePoint.transform);
+                activeInteractable.transform.position = _placePoint.transform.position;
+                activeInteractable = null;
+            }
+            else if (_placePoint.transform.childCount == 1)
+            {
+                GameObject temp = _placePoint.transform.GetChild(0).gameObject;
+
+                activeInteractable.transform.SetParent(_placePoint.transform);
+                activeInteractable.transform.position = _placePoint.transform.position;
+
+                activeInteractable = temp;
+                activeInteractable.transform.SetParent(holdingPoint.transform);
+                activeInteractable.transform.position = holdingPoint.transform.position;
+            }
         }
         else if (activeInteractable == null && _placePoint.transform.childCount == 1)
         {

@@ -108,4 +108,38 @@ public class PlayerController : MonoBehaviour
             activeInteractable.transform.position = holdingPoint.transform.position;
         }
     }
+
+    public void Grill(GameObject _placePoint)
+    {
+        if (activeInteractable != null)
+        {
+            if (activeInteractable.tag == "Patty" && _placePoint.transform.childCount == 0 && !activeInteractable.GetComponent<Patty>().isCooked)
+            {
+                activeInteractable.transform.SetParent(_placePoint.transform);
+                activeInteractable.transform.position = _placePoint.transform.position;
+                activeInteractable = null;
+            }
+        }
+        else if (activeInteractable == null && _placePoint.transform.childCount == 1 && _placePoint.transform.GetChild(0).GetComponent<Patty>().isCooked)
+        {
+            activeInteractable = _placePoint.transform.GetChild(0).gameObject;
+            activeInteractable.transform.SetParent(holdingPoint.transform);
+            activeInteractable.transform.position = holdingPoint.transform.position;
+            Destroy(activeInteractable.GetComponent<Patty>().timerBar);
+        }
+    }
+
+    public void FinishHamburger(GameObject interactablePrefab)
+    {
+        if (activeInteractable != null)
+        {
+            if (activeInteractable.tag == "Patty" && activeInteractable.GetComponent<Patty>().isCooked)
+            {
+                Destroy(activeInteractable);
+                GameObject interactable = Instantiate(interactablePrefab, holdingPoint.transform.position, Quaternion.identity);
+                interactable.transform.SetParent(holdingPoint.transform);
+                activeInteractable = interactable;
+            }
+        }
+    }
 }

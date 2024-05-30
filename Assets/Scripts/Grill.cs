@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ingredient : MonoBehaviour, IInteractable
+public class Grill : MonoBehaviour, IInteractable
 {
     PlayerController playerController;
 
-    public GameObject ingredientPrefab;
+    [SerializeField] private GameObject placePoint;
 
     private void Start()
     {
@@ -15,6 +15,6 @@ public class Ingredient : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        playerController.PickUp(ingredientPrefab);
+        playerController.Grill(placePoint);
     }
 }

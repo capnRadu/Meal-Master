@@ -593,6 +593,7 @@ GameObject:
   m_Component:
   - component: {fileID: 485479186}
   - component: {fileID: 485479188}
+  - component: {fileID: 485479189}
   - component: {fileID: 485479187}
   m_Layer: 0
   m_Name: Buns
@@ -651,6 +652,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.225235, y: 1, z: 1.8264017}
   m_Center: {x: -0.13031769, y: 0, z: -0.060859203}
+--- !u!114 &485479189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485479185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 832152c7ef9171c4190336d12aecc8ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ingredientPrefab: {fileID: 7608446549679543536, guid: 3cf09ff5394f87140a98a1ce0de23bdd,
+    type: 3}
 --- !u!1 &570831226
 GameObject:
   m_ObjectHideFlags: 0
@@ -1046,6 +1061,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 823971235}
   m_Mesh: {fileID: 9066533519686134248, guid: f130645f7edcc614d8980e280beb7793, type: 3}
+--- !u!1 &886604116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 886604117}
+  m_Layer: 0
+  m_Name: Place Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &886604117
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886604116}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0501, y: 0.0785, z: 0.0206}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1005309235206311342}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &954120135
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,7 +1400,7 @@ GameObject:
   - component: {fileID: 1190637352}
   - component: {fileID: 1190637356}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Canvas UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1466,10 +1512,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1307509002}
   - component: {fileID: 1307509004}
+  - component: {fileID: 1307509005}
   - component: {fileID: 1307509003}
   m_Layer: 0
   m_Name: Grill (1)
-  m_TagString: Untagged
+  m_TagString: Grill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1504,6 +1551,7 @@ Transform:
   - {fileID: 396053411}
   - {fileID: 570831227}
   - {fileID: 624838618}
+  - {fileID: 2059039648}
   m_Father: {fileID: 1188769406}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &1307509003
@@ -1539,6 +1587,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.32130578, y: 0.11635137, z: 0.43891263}
   m_Center: {x: 0.052828845, y: -0.013492702, z: 0.021440336}
+--- !u!114 &1307509005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307509001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb546b8372eea734ab10dc0590c59671, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placePoint: {fileID: 2059039647}
 --- !u!1 &1395200103
 GameObject:
   m_ObjectHideFlags: 0
@@ -2699,6 +2760,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1986662389}
   m_Mesh: {fileID: -2865104911859505335, guid: f130645f7edcc614d8980e280beb7793, type: 3}
+--- !u!1 &2059039647
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2059039648}
+  m_Layer: 0
+  m_Name: Place Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2059039648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059039647}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.0501, y: 0.0785, z: 0.0206}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1307509002}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2121427968
 GameObject:
   m_ObjectHideFlags: 0
@@ -4151,10 +4243,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1005309235206311342}
   - component: {fileID: 1005309235206311344}
+  - component: {fileID: 1005309235206311345}
   - component: {fileID: 1005309235206311343}
   m_Layer: 0
   m_Name: Grill
-  m_TagString: Untagged
+  m_TagString: Grill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5228,6 +5321,7 @@ GameObject:
   - component: {fileID: 2267502769110259261}
   - component: {fileID: 3574224714975356326}
   - component: {fileID: 3574224714975356328}
+  - component: {fileID: 3574224714975356329}
   - component: {fileID: 3574224714975356327}
   m_Layer: 0
   m_Name: Patty
@@ -5376,6 +5470,7 @@ Transform:
   - {fileID: 3886580616280643818}
   - {fileID: 8148041214540250054}
   - {fileID: 3866452584926460514}
+  - {fileID: 886604117}
   m_Father: {fileID: 1188769406}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &1005309235206311343
@@ -5411,6 +5506,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.32130578, y: 0.11635137, z: 0.43891263}
   m_Center: {x: 0.052828845, y: -0.013492702, z: 0.021440336}
+--- !u!114 &1005309235206311345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484211455467722516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb546b8372eea734ab10dc0590c59671, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placePoint: {fileID: 886604116}
 --- !u!33 &1007799217150498263
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -12478,6 +12586,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.1253718, y: 0.2184689, z: 1.1232458}
   m_Center: {x: 0, y: -0.000044886023, z: 0}
+--- !u!114 &3574224714975356329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957422087132136467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c128a86dcbeefac4083404dee30784b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ingredientPrefab: {fileID: 1062722044820049641, guid: 0dc4ede46efdd48449e69890d0d82b10,
+    type: 3}
 --- !u!23 &3575234223995100667
 MeshRenderer:
   m_ObjectHideFlags: 0

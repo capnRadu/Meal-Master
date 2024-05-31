@@ -3,25 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SodaMachine : BasicIngredient
+public class DeepFryer : BasicIngredient
 {
-    private float timeToCook = 4;
+    private float timeToCook = 5;
     private float timeSpent = 0;
-    private bool isRefilled = true;
+    private bool isFried = false;
+    private bool startFryer = false;
 
     [SerializeField] private GameObject timerBarPrefab;
     [NonSerialized] public GameObject timerBar;
 
-    [SerializeField] private GameObject sodaProp;
+    [SerializeField] private GameObject friesProp;
+
+    [SerializeField] private float offsetZ;
 
     private void Update()
     {
-        if (!isRefilled)
+        if (startFryer)
         {
             if (timerBar == null)
             {
                 timerBar = Instantiate(timerBarPrefab);
-                timerBar.transform.position = transform.position + new Vector3(0, 7, 0);
+                timerBar.transform.position = transform.position + new Vector3(0, 3, offsetZ);
                 timerBar.transform.rotation = Quaternion.Euler(0, 35, 0);
                 timerBar.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
                 timerBar.transform.SetParent(transform);
@@ -32,21 +35,26 @@ public class SodaMachine : BasicIngredient
 
             if (timeSpent >= timeToCook)
             {
-                isRefilled = true;
+                isFried = true;
+                startFryer = false;
                 Destroy(timerBar);
-                sodaProp.SetActive(true);
+                friesProp.SetActive(true);
             }
         }
     }
 
     public override void Interact()
     {
-        if (isRefilled && playerController.activeInteractable == null)
+        if (isFried && playerController.activeInteractable == null)
         {
-            sodaProp.SetActive(false);
-            isRefilled = false;
+            friesProp.SetActive(false);
+            isFried = false;
             timeSpent = 0;
             base.Interact();
+        }
+        else if (!isFried)
+        {
+            startFryer = true;
         }
     }
 }

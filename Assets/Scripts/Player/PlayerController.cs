@@ -35,6 +35,10 @@ public class PlayerController : MonoBehaviour
                 {
                     interactable = interactableObject;
                 }
+                else
+                {
+                    interactable = null;
+                }
             }
         }
 

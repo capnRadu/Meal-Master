@@ -14335,11 +14335,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 408604134590691138}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c128a86dcbeefac4083404dee30784b6, type: 3}
+  m_Script: {fileID: 11500000, guid: 566ea5e65455e7b479c4499d2bd4d0b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ingredientPrefab: {fileID: 1528590507733668575, guid: 1373b418444cc6545a9b26fd2b815219,
     type: 3}
+  timerBarPrefab: {fileID: 7197679106672004280, guid: 779a24622f70a7b4885277acc10bf092,
+    type: 3}
+  sodaProp: {fileID: 1356910990568292004}
 --- !u!1 &4135795520765097786
 GameObject:
   m_ObjectHideFlags: 0

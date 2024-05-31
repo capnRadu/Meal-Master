@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Patty : MonoBehaviour
 {
-    private float timeToCook = 5;
+    private float timeToCook = 7;
     private float timeSpent = 0;
     [NonSerialized] public bool isCooked = false;
 

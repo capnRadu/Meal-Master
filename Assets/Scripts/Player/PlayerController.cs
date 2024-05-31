@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private Animator playerAnimator;
 
     IInteractable interactable;
-    private GameObject activeInteractable;
+    [NonSerialized] public GameObject activeInteractable;
     [SerializeField] private GameObject holdingPoint;
 
     private void Awake()

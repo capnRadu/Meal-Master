@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
 
     public void ThrowToTrash()
     {
-        if (holdingPoint.transform.childCount > 0)
+        if (activeInteractable != null)
         {
             Destroy(holdingPoint.transform.GetChild(0).gameObject);
             activeInteractable = null;
@@ -100,19 +100,6 @@ public class PlayerController : MonoBehaviour
 
     public void Tray(GameObject _placePoint)
     {
-        /*if (activeInteractable != null && _placePoint.transform.childCount == 0)
-        {
-            activeInteractable.transform.SetParent(_placePoint.transform);
-            activeInteractable.transform.position = _placePoint.transform.position;
-            activeInteractable = null;
-        }
-        else if (activeInteractable == null && _placePoint.transform.childCount == 1)
-        {
-            activeInteractable = _placePoint.transform.GetChild(0).gameObject;
-            activeInteractable.transform.SetParent(holdingPoint.transform);
-            activeInteractable.transform.position = holdingPoint.transform.position;
-        }*/
-
         if (activeInteractable != null)
         {
             if (_placePoint.transform.childCount == 0)
@@ -171,6 +158,21 @@ public class PlayerController : MonoBehaviour
                 GameObject interactable = Instantiate(interactablePrefab, holdingPoint.transform.position, Quaternion.identity);
                 interactable.transform.SetParent(holdingPoint.transform);
                 activeInteractable = interactable;
+            }
+        }
+    }
+
+    public void Serve(string _order, Customer _customer)
+    {
+        if (activeInteractable != null)
+        {
+            if (activeInteractable.tag == _order)
+            {
+                Destroy(holdingPoint.transform.GetChild(0).gameObject);
+                activeInteractable = null;
+                _customer.hasReceivedOrder = true;
+                Destroy(_customer.timerBar);
+                Destroy(_customer.orderCanvas);
             }
         }
     }

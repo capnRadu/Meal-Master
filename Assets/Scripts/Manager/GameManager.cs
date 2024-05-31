@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     private bool isSpawning = false;
     private float spawnRate = 5f;
 
+    private List<string> orders = new List<string> { "Hamburger", "Fries", "Soda", "Salad" };
+
     private void Update()
     {
         if (currentCustomers < maximumCustomers && !isSpawning)
@@ -49,6 +51,7 @@ public class GameManager : MonoBehaviour
 
         customerScript.modelAnimator = customerModel.GetComponent<Animator>();
         customerScript.gameManager = this;
+        customerScript.order = orders[UnityEngine.Random.Range(0, orders.Count)];
 
         currentCustomers++;
 

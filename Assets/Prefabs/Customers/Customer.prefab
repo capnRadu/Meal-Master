@@ -66,4 +66,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703f3ae2e42a7bd4284c29c6fa5bae77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waypoints: []
+  order: 
+  timerBarPrefab: {fileID: 7197679106672004280, guid: 779a24622f70a7b4885277acc10bf092,
+    type: 3}
+  orderCanvasPrefab: {fileID: 7197679106672004280, guid: 84768f55be5db0d44855134ffe33decc,
+    type: 3}

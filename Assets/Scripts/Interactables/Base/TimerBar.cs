@@ -8,9 +8,9 @@ public class TimerBar : MonoBehaviour
     private float totalTime;
     private float currentTime;
 
-    public void UpdateTimer(float timeSpent, float timeToCook)
+    public void UpdateTimer(float timeSpent, float fullTime)
     {
-        totalTime = timeToCook;
+        totalTime = fullTime;
         currentTime = timeSpent;
         GetComponent<Image>().fillAmount = currentTime / totalTime;
     }

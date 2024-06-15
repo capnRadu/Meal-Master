@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class GameManager : MonoBehaviour
     private float spawnRate = 5f;
 
     private List<string> orders = new List<string> { "Hamburger", "Fries", "Soda", "Salad" };
+
+    [SerializeField] private List<GameObject> chefHats = new List<GameObject>();
+    [SerializeField] private AudioSource failSfx;
 
     private void Update()
     {
@@ -58,5 +62,64 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(spawnRate);
 
         isSpawning = false;
+    }
+
+    public void LoseHat()
+    {
+        if (chefHats.Count > 0)
+        {
+            failSfx.Play();
+            StartCoroutine(DeactivateIcon(chefHats[chefHats.Count - 1].transform));
+        }
+    }
+
+    private IEnumerator DeactivateIcon(Transform icon)
+    {
+        if (icon == null)
+        {
+            yield break;
+        }
+
+        Vector3 originalScale = icon.localScale;
+        Vector3 targetScale = originalScale * 1.5f;
+        float duration = 0.2f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            if (icon == null)
+            {
+                yield break;
+            }
+
+            icon.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            if (icon == null)
+            {
+                yield break;
+            }
+
+            icon.localScale = Vector3.Lerp(targetScale, originalScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        if (icon != null)
+        {
+            Destroy(icon.gameObject);
+            chefHats.RemoveAt(chefHats.Count - 1);
+
+            if (chefHats.Count == 0)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
     }
 }

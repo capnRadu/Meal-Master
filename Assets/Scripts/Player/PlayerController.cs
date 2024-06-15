@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour
     [NonSerialized] public GameObject activeInteractable;
     [SerializeField] private GameObject holdingPoint;
 
+    [SerializeField] private AudioSource tapSfx;
+    [SerializeField] private AudioSource successSfx;
+    [SerializeField] private AudioSource errorSfx;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -24,6 +28,8 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            tapSfx.Play();
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -168,11 +174,17 @@ public class PlayerController : MonoBehaviour
         {
             if (activeInteractable.tag == _order)
             {
+                successSfx.Play();
+
                 Destroy(holdingPoint.transform.GetChild(0).gameObject);
                 activeInteractable = null;
                 _customer.hasReceivedOrder = true;
                 Destroy(_customer.timerBar);
                 Destroy(_customer.orderCanvas);
+            }
+            else
+            {
+                errorSfx.Play();
             }
         }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Customer : MonoBehaviour, IInteractable
@@ -20,6 +21,7 @@ public class Customer : MonoBehaviour, IInteractable
 
     public string order;
     [NonSerialized] public bool hasReceivedOrder = false;
+    private bool hasLostHat = false;
 
     private float waitingTime = 20;
     private float timeSpent = 20;
@@ -56,6 +58,40 @@ public class Customer : MonoBehaviour, IInteractable
         {
             timeSpent -= Time.deltaTime;
             timerBar.GetComponentInChildren<TimerBar>().UpdateTimer(timeSpent, waitingTime);
+
+            if (timeSpent <= waitingTime * 3 / 4)
+            {
+                foreach (Transform transform in orderCanvas.transform)
+                {
+                    if (transform.tag == "Happy Icon")
+                    {
+                        transform.gameObject.SetActive(false);
+                    }
+
+                    if (transform.tag == "Confused Icon")
+                    {
+                        transform.gameObject.SetActive(true);
+                        StartCoroutine(ScaleIcon(transform, 0.5f));
+                    }
+                }
+            }
+
+            if (timeSpent <= waitingTime * 1 / 2)
+            {
+                foreach (Transform transform in orderCanvas.transform)
+                {
+                    if (transform.tag == "Confused Icon")
+                    {
+                        transform.gameObject.SetActive(false);
+                    }
+
+                    if (transform.tag == "Angry Icon")
+                    {
+                        transform.gameObject.SetActive(true);
+                        StartCoroutine(ScaleIcon(transform, 0.3f));
+                    }
+                }
+            }
         }
     }
 
@@ -80,17 +116,85 @@ public class Customer : MonoBehaviour, IInteractable
                 {
                     modelAnimator.SetBool("isWalking", false);
 
-                    timerBar = Instantiate(timerBarPrefab, transform.position + new Vector3(0, 10, 0), Quaternion.identity, transform);
-                    orderCanvas = Instantiate(orderCanvasPrefab, transform.position + new Vector3(0, 11, 0), Quaternion.identity, transform);
-                    orderCanvas.GetComponentInChildren<TextMeshProUGUI>().text = order;
+                    timerBar = Instantiate(timerBarPrefab, transform.position + new Vector3(1.42f, 11, 0), Quaternion.identity, transform);
+                    orderCanvas = Instantiate(orderCanvasPrefab, transform.position + new Vector3(0, 10, 0), Quaternion.identity, transform);
+                    
+                    foreach (Transform transform in orderCanvas.transform)
+                    {
+                        if (order == "Hamburger" && transform.tag == "Hamburger Icon")
+                        {
+                            transform.gameObject.SetActive(true);
+                        }
+                        else if (order == "Fries" && transform.tag == "Fries Icon")
+                        {
+                            transform.gameObject.SetActive(true);
+                        }
+                        else if (order == "Soda" && transform.tag == "Soda Icon")
+                        {
+                            transform.gameObject.SetActive(true);
+                        }
+                        else if (order == "Salad" && transform.tag == "Salad Icon")
+                        {
+                            transform.gameObject.SetActive(true);
+                        }
+                    }
                 }
                 else if (waypoint == destroyPoint && (hasReceivedOrder || timeSpent <= 0))
                 {
+                    if (!hasReceivedOrder && !hasLostHat)
+                    {
+                        hasLostHat = true;
+                        gameManager.LoseHat();
+                    }
+
                     modelAnimator.SetBool("isWalking", true);
                     Destroy(timerBar);
                     Destroy(orderCanvas);
                 }
             }
+        }
+    }
+
+    private IEnumerator ScaleIcon(Transform icon, float duration)
+    {
+        if (icon == null)
+        {
+            yield break;
+        }
+
+        Vector3 originalScale = icon.localScale;
+        Vector3 targetScale = originalScale * 1.2f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            if (icon == null)
+            {
+                yield break;
+            }
+
+            icon.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            if (icon == null)
+            {
+                yield break;
+            }
+
+            icon.localScale = Vector3.Lerp(targetScale, originalScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        if (icon != null)
+        {
+            icon.localScale = originalScale;
         }
     }
 

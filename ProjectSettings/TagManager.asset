@@ -13,6 +13,13 @@ TagManager:
   - Hamburger
   - Timer Bar
   - Fries
+  - Soda Icon
+  - Hamburger Icon
+  - Fries Icon
+  - Salad Icon
+  - Happy Icon
+  - Confused Icon
+  - Angry Icon
   layers:
   - Default
   - TransparentFX

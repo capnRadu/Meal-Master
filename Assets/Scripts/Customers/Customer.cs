@@ -34,6 +34,10 @@ public class Customer : MonoBehaviour, IInteractable
     public enum orderState { Happy, Confused, Angry };
     public orderState currentState;
 
+    [NonSerialized] public int happyOrderMoney = 15;
+    [NonSerialized] public int confusedOrderMoney = 10;
+    [NonSerialized] public int angryOrderMoney = 5;
+
     private void Start()
     {
         playerController = FindObjectOfType<PlayerController>();
@@ -45,6 +49,24 @@ public class Customer : MonoBehaviour, IInteractable
         modelAnimator.SetBool("isWalking", true);
 
         currentState = orderState.Happy;
+
+        switch (DifficultyManager.Instance.currentDifficulty)
+        {
+            case DifficultyManager.difficultyMode.Novice:
+                waitingTime = 45;
+                timeSpent = 45;
+                happyOrderMoney = 15;
+                confusedOrderMoney = 10;
+                angryOrderMoney = 5;
+                break;
+            case DifficultyManager.difficultyMode.Expert:
+                waitingTime = 15;
+                timeSpent = 15;
+                happyOrderMoney = 30;
+                confusedOrderMoney = 20;
+                angryOrderMoney = 10;
+                break;
+        }
 
         StartCoroutine(MoveToWaypoints());
     }

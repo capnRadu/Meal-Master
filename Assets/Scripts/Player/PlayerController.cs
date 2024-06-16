@@ -191,13 +191,13 @@ public class PlayerController : MonoBehaviour
                 switch (_customer.currentState)
                 {
                     case Customer.orderState.Happy:
-                        Upgrades.Instance.AddMoney(20);
+                        Upgrades.Instance.AddMoney(_customer.happyOrderMoney);
                         break;
                     case Customer.orderState.Confused:
-                        Upgrades.Instance.AddMoney(10);
+                        Upgrades.Instance.AddMoney(_customer.confusedOrderMoney);
                         break;
                     case Customer.orderState.Angry:
-                        Upgrades.Instance.AddMoney(5);
+                        Upgrades.Instance.AddMoney(_customer.angryOrderMoney);
                         break;
                 }
             }

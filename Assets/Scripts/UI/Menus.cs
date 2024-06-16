@@ -4,15 +4,25 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static DifficultyManager;
 
 public class Menus : MonoBehaviour
 {
     [SerializeField] private GameObject loadingMenu;
     [SerializeField] private Image loadingBarFill;
 
-    public void Play(int sceneId)
+    [SerializeField] private GameObject lockedMenu;
+
+    public void Play(bool expertMode)
     {
-        StartCoroutine(LoadSceneAsync(sceneId));
+        if (!expertMode || (expertMode && !DifficultyManager.Instance.expertLocked))
+        {
+            StartCoroutine(LoadSceneAsync(1));
+        }
+        else
+        {
+            lockedMenu.SetActive(true);
+        }
     }
 
     public void Quit()
@@ -34,5 +44,20 @@ public class Menus : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void SetDifficulty(int difficulty)
+    {
+        switch (difficulty)
+        {
+            case 0:
+                DifficultyManager.Instance.currentDifficulty = difficultyMode.Novice;
+                break;
+            case 1:
+                DifficultyManager.Instance.currentDifficulty = difficultyMode.Expert;
+                break;
+        }
+
+        Debug.Log(DifficultyManager.Instance.currentDifficulty);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,20 +18,111 @@ public class GameManager : MonoBehaviour
     private int maximumCustomers = 4;
     [NonSerialized] public int currentCustomers = 0;
     private bool isSpawning = false;
-    private float spawnRate = 5f;
+    private float spawnRate = 11f;
 
     private List<string> orders = new List<string> { "Hamburger", "Fries", "Soda", "Salad" };
 
     [SerializeField] private List<GameObject> chefHats = new List<GameObject>();
     [SerializeField] private AudioSource failSfx;
 
+    private int round = 0;
+    private int customersPerRound = 4;
+    private int totalSpawnedCustomers = 0;
+    [SerializeField] private GameObject roundPanel;
+    [SerializeField] private TextMeshProUGUI currentRoundPanelText;
+    [SerializeField] private TextMeshProUGUI currentRoundHudText;
+    private bool isStartingNewRound = false;
+
+    private void Start()
+    {
+        switch (DifficultyManager.Instance.currentDifficulty)
+        {
+            case DifficultyManager.difficultyMode.Novice:
+                spawnRate = 11f;
+                break;
+            case DifficultyManager.difficultyMode.Expert:
+                spawnRate = 6f;
+                break;
+        }
+
+        NewRound();
+    }
+
     private void Update()
     {
-        if (currentCustomers < maximumCustomers && !isSpawning)
+        if (!isStartingNewRound)
         {
-            StartCoroutine(SpawnCustomer());
-            isSpawning = true;
+            if (currentCustomers < maximumCustomers && !isSpawning && totalSpawnedCustomers != customersPerRound)
+            {
+                StartCoroutine(SpawnCustomer());
+                isSpawning = true;
+            }
+            else if (currentCustomers == 0 && totalSpawnedCustomers == customersPerRound)
+            {
+                NewRound();
+            }
         }
+    }
+
+    private void NewRound()
+    {
+        round++;
+        totalSpawnedCustomers = 0;
+        customersPerRound += 2;
+
+        if (round == 5 && DifficultyManager.Instance.expertLocked)
+        {
+            DifficultyManager.Instance.expertLocked = false;
+        }
+
+        if (spawnRate > 2f)
+        {
+           spawnRate -= 1f;
+        }
+
+        currentRoundPanelText.text = "Round " + round;
+        currentRoundHudText.text = "Round " + round;
+        StartCoroutine(RoundPanel(roundPanel.transform));
+    }
+
+    private IEnumerator RoundPanel(Transform panel)
+    {
+        isStartingNewRound = true;
+
+        if (round == 1)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+
+        panel.gameObject.SetActive(true);
+        panel.localScale = Vector3.zero;
+
+        Vector3 originalScale = panel.localScale;
+        Vector3 targetScale = new Vector3(1, 1, 1);
+        float duration = 0.2f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            panel.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        elapsedTime = 0f;
+
+        yield return new WaitForSeconds(2f);
+
+        while (elapsedTime < duration)
+        {
+            panel.localScale = Vector3.Lerp(targetScale, originalScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        panel.gameObject.SetActive(false);
+
+        isStartingNewRound = false;
     }
 
     private IEnumerator SpawnCustomer()
@@ -58,6 +150,7 @@ public class GameManager : MonoBehaviour
         customerScript.order = orders[UnityEngine.Random.Range(0, orders.Count)];
 
         currentCustomers++;
+        totalSpawnedCustomers++;
 
         yield return new WaitForSeconds(spawnRate);
 

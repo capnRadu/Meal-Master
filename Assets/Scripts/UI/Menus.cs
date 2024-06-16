@@ -9,9 +9,6 @@ public class Menus : MonoBehaviour
 {
     [SerializeField] private GameObject loadingMenu;
     [SerializeField] private Image loadingBarFill;
-    [SerializeField] private GameObject playButton;
-    [SerializeField] private GameObject quitButton;
-    [SerializeField] private GameObject background;
 
     public void Play(int sceneId)
     {
@@ -28,9 +25,6 @@ public class Menus : MonoBehaviour
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneId);
 
         loadingMenu.SetActive(true);
-        playButton.SetActive(false);
-        quitButton.SetActive(false);
-        background.SetActive(false);
 
         while (!operation.isDone)
         {

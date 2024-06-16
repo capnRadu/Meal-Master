@@ -5,12 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/MainScene.unity
-    guid: d0637ef0591c6a04a994945816011689
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 3ca9d9744d8c1084498b21e8f4e227e8
+  - enabled: 1
+    path: Assets/Scenes/MainScene.unity
+    guid: d0637ef0591c6a04a994945816011689
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 744ae9a44f88a9746b373eec584592c4,
       type: 2}

@@ -31,6 +31,8 @@ public class Customer : MonoBehaviour, IInteractable
     [SerializeField] private GameObject orderCanvasPrefab;
     [NonSerialized] public GameObject orderCanvas;
 
+    public enum orderState { Happy, Confused, Angry };
+    public orderState currentState;
 
     private void Start()
     {
@@ -41,6 +43,8 @@ public class Customer : MonoBehaviour, IInteractable
         waypoints.Add(destroyPoint);
 
         modelAnimator.SetBool("isWalking", true);
+
+        currentState = orderState.Happy;
 
         StartCoroutine(MoveToWaypoints());
     }
@@ -70,6 +74,7 @@ public class Customer : MonoBehaviour, IInteractable
 
                     if (transform.tag == "Confused Icon")
                     {
+                        currentState = orderState.Confused;
                         transform.gameObject.SetActive(true);
                         StartCoroutine(ScaleIcon(transform, 0.5f));
                     }
@@ -87,6 +92,7 @@ public class Customer : MonoBehaviour, IInteractable
 
                     if (transform.tag == "Angry Icon")
                     {
+                        currentState = orderState.Angry;
                         transform.gameObject.SetActive(true);
                         StartCoroutine(ScaleIcon(transform, 0.3f));
                     }

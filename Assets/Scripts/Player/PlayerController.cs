@@ -187,6 +187,19 @@ public class PlayerController : MonoBehaviour
                 _customer.hasReceivedOrder = true;
                 Destroy(_customer.timerBar);
                 Destroy(_customer.orderCanvas);
+
+                switch (_customer.currentState)
+                {
+                    case Customer.orderState.Happy:
+                        Upgrades.Instance.AddMoney(20);
+                        break;
+                    case Customer.orderState.Confused:
+                        Upgrades.Instance.AddMoney(10);
+                        break;
+                    case Customer.orderState.Angry:
+                        Upgrades.Instance.AddMoney(5);
+                        break;
+                }
             }
             else
             {

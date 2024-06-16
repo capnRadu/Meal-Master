@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour
 
             if (chefHats.Count == 0)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                SceneManager.LoadScene("MainMenu");
             }
         }
     }

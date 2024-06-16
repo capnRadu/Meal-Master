@@ -14,6 +14,8 @@ public class SodaMachine : BasicIngredient
 
     [SerializeField] private GameObject sodaProp;
 
+    [SerializeField] private AudioSource sodaPourSfx;
+
     private void Update()
     {
         if (!isRefilled)
@@ -25,6 +27,8 @@ public class SodaMachine : BasicIngredient
                 timerBar.transform.rotation = Quaternion.Euler(0, 35, 0);
                 timerBar.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
                 timerBar.transform.SetParent(transform);
+
+                sodaPourSfx.Play();
             }
 
             timeSpent += Time.deltaTime;

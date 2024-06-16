@@ -17,6 +17,8 @@ public class DeepFryer : BasicIngredient
 
     [SerializeField] private float offsetZ;
 
+    [SerializeField] private AudioSource fryerSfx;
+
     private void Update()
     {
         if (startFryer)
@@ -55,6 +57,7 @@ public class DeepFryer : BasicIngredient
         else if (!isFried)
         {
             startFryer = true;
+            fryerSfx.Play();
         }
     }
 }

@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource tapSfx;
     [SerializeField] private AudioSource successSfx;
     [SerializeField] private AudioSource errorSfx;
+    [SerializeField] private AudioSource grillSfx;
+    [SerializeField] private AudioSource pickUpSfx;
 
     private void Awake()
     {
@@ -92,6 +94,8 @@ public class PlayerController : MonoBehaviour
             GameObject interactable = Instantiate(interactablePrefab, holdingPoint.transform.position, Quaternion.identity);
             interactable.transform.SetParent(holdingPoint.transform);
             activeInteractable = interactable;
+
+            pickUpSfx.Play();
         }
     }
 
@@ -143,6 +147,8 @@ public class PlayerController : MonoBehaviour
                 activeInteractable.transform.SetParent(_placePoint.transform);
                 activeInteractable.transform.position = _placePoint.transform.position;
                 activeInteractable = null;
+
+                grillSfx.Play();
             }
         }
         else if (activeInteractable == null && _placePoint.transform.childCount == 1 && _placePoint.transform.GetChild(0).GetComponent<Patty>().isCooked)

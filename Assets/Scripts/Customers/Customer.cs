@@ -19,7 +19,7 @@ public class Customer : MonoBehaviour, IInteractable
     [NonSerialized] public Transform destroyPoint;
     private List<Transform> waypoints = new List<Transform>();
 
-    public string order;
+    public List<string> order = new List<string>();
     [NonSerialized] public bool hasReceivedOrder = false;
     private bool hasLostHat = false;
 
@@ -30,6 +30,14 @@ public class Customer : MonoBehaviour, IInteractable
 
     [SerializeField] private GameObject orderCanvasPrefab;
     [NonSerialized] public GameObject orderCanvas;
+    private GameObject happyIcon;
+    private GameObject confusedIcon;
+    private GameObject angryIcon;
+    private GameObject hamburgerIcon;
+    private GameObject friesIcon;
+    private GameObject sodaIcon;
+    private GameObject saladIcon;
+    private TextMeshProUGUI ordersNumber;
 
     public enum orderState { Happy, Confused, Angry };
     public orderState currentState;
@@ -87,39 +95,23 @@ public class Customer : MonoBehaviour, IInteractable
 
             if (timeSpent <= waitingTime * 3 / 4)
             {
-                foreach (Transform transform in orderCanvas.transform)
-                {
-                    if (transform.tag == "Happy Icon")
-                    {
-                        transform.gameObject.SetActive(false);
-                    }
+                happyIcon.SetActive(false);
+                confusedIcon.SetActive(true);
 
-                    if (transform.tag == "Confused Icon")
-                    {
-                        currentState = orderState.Confused;
-                        transform.gameObject.SetActive(true);
-                        StartCoroutine(ScaleIcon(transform, 0.5f));
-                    }
-                }
+                currentState = orderState.Confused;
+                StartCoroutine(ScaleIcon(confusedIcon.transform, 0.5f));
             }
 
             if (timeSpent <= waitingTime * 1 / 2)
             {
-                foreach (Transform transform in orderCanvas.transform)
-                {
-                    if (transform.tag == "Confused Icon")
-                    {
-                        transform.gameObject.SetActive(false);
-                    }
+                confusedIcon.SetActive(false);
+                angryIcon.SetActive(true);
 
-                    if (transform.tag == "Angry Icon")
-                    {
-                        currentState = orderState.Angry;
-                        transform.gameObject.SetActive(true);
-                        StartCoroutine(ScaleIcon(transform, 0.3f));
-                    }
-                }
+                currentState = orderState.Angry;
+                StartCoroutine(ScaleIcon(angryIcon.transform, 0.5f));
             }
+
+            ordersNumber.text = $"x{order.Count}";
         }
     }
 
@@ -146,25 +138,52 @@ public class Customer : MonoBehaviour, IInteractable
 
                     timerBar = Instantiate(timerBarPrefab, transform.position + new Vector3(1.42f, 11, 0), Quaternion.identity, transform);
                     orderCanvas = Instantiate(orderCanvasPrefab, transform.position + new Vector3(0, 10, 0), Quaternion.identity, transform);
-                    
+
                     foreach (Transform transform in orderCanvas.transform)
                     {
-                        if (order == "Hamburger" && transform.tag == "Hamburger Icon")
+                        switch (transform.tag)
                         {
-                            transform.gameObject.SetActive(true);
+                            case "Happy Icon":
+                                happyIcon = transform.gameObject;
+                                break;
+                            case "Confused Icon":
+                                confusedIcon = transform.gameObject;
+                                break;
+                            case "Angry Icon":
+                                angryIcon = transform.gameObject;
+                                break;
+                            case "Hamburger Icon":
+                                hamburgerIcon = transform.gameObject;
+                                break;
+                            case "Fries Icon":
+                                friesIcon = transform.gameObject;
+                                break;
+                            case "Soda Icon":
+                                sodaIcon = transform.gameObject;
+                                break;
+                            case "Salad Icon":
+                                saladIcon = transform.gameObject;
+                                break;
+                            case "Orders Number":
+                                ordersNumber = transform.GetComponent<TextMeshProUGUI>();
+                                break;
                         }
-                        else if (order == "Fries" && transform.tag == "Fries Icon")
-                        {
-                            transform.gameObject.SetActive(true);
-                        }
-                        else if (order == "Soda" && transform.tag == "Soda Icon")
-                        {
-                            transform.gameObject.SetActive(true);
-                        }
-                        else if (order == "Salad" && transform.tag == "Salad Icon")
-                        {
-                            transform.gameObject.SetActive(true);
-                        }
+                    }
+
+                    switch (order[0])
+                    {
+                        case "Hamburger":
+                            hamburgerIcon.SetActive(true);
+                            break;
+                        case "Fries":
+                            friesIcon.SetActive(true);
+                            break;
+                        case "Soda":
+                            sodaIcon.SetActive(true);
+                            break;
+                        case "Salad":
+                            saladIcon.SetActive(true);
+                            break;
                     }
                 }
                 else if (waypoint == destroyPoint && (hasReceivedOrder || timeSpent <= 0))

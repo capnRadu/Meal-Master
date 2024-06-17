@@ -22,6 +22,8 @@ TagManager:
   - Angry Icon
   - Finished Icon
   - Player Money
+  - Orders Number
+  - Customer
   layers:
   - Default
   - TransparentFX

@@ -147,7 +147,22 @@ public class GameManager : MonoBehaviour
 
         customerScript.modelAnimator = customerModel.GetComponent<Animator>();
         customerScript.gameManager = this;
-        customerScript.order = orders[UnityEngine.Random.Range(0, orders.Count)];
+
+        string order = orders[UnityEngine.Random.Range(0, orders.Count)];
+
+        switch (DifficultyManager.Instance.currentDifficulty)
+        {
+            case DifficultyManager.difficultyMode.Novice:
+                customerScript.order.Add(order);
+                break;
+            case DifficultyManager.difficultyMode.Expert:
+                int randomOrdersNumber = UnityEngine.Random.Range(1, 3);
+                for (int i = 0; i < randomOrdersNumber; i++)
+                {
+                    customerScript.order.Add(order);
+                }
+                break;
+        }
 
         currentCustomers++;
         totalSpawnedCustomers++;

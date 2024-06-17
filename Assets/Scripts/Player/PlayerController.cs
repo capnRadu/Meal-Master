@@ -174,31 +174,36 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void Serve(string _order, Customer _customer)
+    public void Serve(List<string> _order, Customer _customer)
     {
         if (activeInteractable != null)
         {
-            if (activeInteractable.tag == _order)
+            if (activeInteractable.tag == _order[0])
             {
+                _order.RemoveAt(0);
                 successSfx.Play();
 
                 Destroy(holdingPoint.transform.GetChild(0).gameObject);
                 activeInteractable = null;
-                _customer.hasReceivedOrder = true;
-                Destroy(_customer.timerBar);
-                Destroy(_customer.orderCanvas);
 
-                switch (_customer.currentState)
+                if (_order.Count == 0)
                 {
-                    case Customer.orderState.Happy:
-                        Upgrades.Instance.AddMoney(_customer.happyOrderMoney);
-                        break;
-                    case Customer.orderState.Confused:
-                        Upgrades.Instance.AddMoney(_customer.confusedOrderMoney);
-                        break;
-                    case Customer.orderState.Angry:
-                        Upgrades.Instance.AddMoney(_customer.angryOrderMoney);
-                        break;
+                    _customer.hasReceivedOrder = true;
+                    Destroy(_customer.timerBar);
+                    Destroy(_customer.orderCanvas);
+
+                    switch (_customer.currentState)
+                    {
+                        case Customer.orderState.Happy:
+                            Upgrades.Instance.AddMoney(_customer.happyOrderMoney);
+                            break;
+                        case Customer.orderState.Confused:
+                            Upgrades.Instance.AddMoney(_customer.confusedOrderMoney);
+                            break;
+                        case Customer.orderState.Angry:
+                            Upgrades.Instance.AddMoney(_customer.angryOrderMoney);
+                            break;
+                    }
                 }
             }
             else

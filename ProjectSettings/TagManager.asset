@@ -24,6 +24,7 @@ TagManager:
   - Player Money
   - Orders Number
   - Customer
+  - Tap Circle
   layers:
   - Default
   - TransparentFX

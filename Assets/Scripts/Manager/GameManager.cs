@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,8 +25,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private List<GameObject> chefHats = new List<GameObject>();
     [SerializeField] private AudioSource failSfx;
+    [SerializeField] private GameObject roundEndMenu;
+    [SerializeField] private GameObject pauseButton;
 
-    private int round = 0;
+    [NonSerialized] public int round = 0;
     private int customersPerRound = 4;
     private int totalSpawnedCustomers = 0;
     [SerializeField] private GameObject roundPanel;
@@ -226,7 +229,9 @@ public class GameManager : MonoBehaviour
 
             if (chefHats.Count == 0)
             {
-                SceneManager.LoadScene("MainMenu");
+                pauseButton.GetComponent<PauseButton>().PauseGame(false);
+                pauseButton.SetActive(false);
+                roundEndMenu.SetActive(true);
             }
         }
     }

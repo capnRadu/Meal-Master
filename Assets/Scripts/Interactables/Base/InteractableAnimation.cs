@@ -51,7 +51,7 @@ public class InteractableAnimation : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (!isAnimating)
+        if (!isAnimating && Time.timeScale != 0)
         {
             AnimateIngredient();
         }

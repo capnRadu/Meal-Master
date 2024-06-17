@@ -48,6 +48,31 @@ public class Customer : MonoBehaviour, IInteractable
 
     private void Start()
     {
+        Setup();
+
+        StartCoroutine(MoveToWaypoints());
+    }
+
+    private void Update()
+    {
+        if (transform.position == destroyPoint.position)
+        {
+            DestroyCustomer();
+        }
+
+        if (timerBar != null && timeSpent >= 0)
+        {
+            timeSpent -= Time.deltaTime;
+            timerBar.GetComponentInChildren<TimerBar>().UpdateTimer(timeSpent, waitingTime);
+
+            ordersNumber.text = $"x{order.Count}";
+
+            ManageCustomerEmotion();
+        }
+    }
+
+    private void Setup()
+    {
         playerController = FindObjectOfType<PlayerController>();
 
         waypoints.Add(checkPoint);
@@ -75,44 +100,6 @@ public class Customer : MonoBehaviour, IInteractable
                 angryOrderMoney = 10;
                 break;
         }
-
-        StartCoroutine(MoveToWaypoints());
-    }
-
-    private void Update()
-    {
-        if (transform.position == destroyPoint.position)
-        {
-            gameManager.activeCustomerWaypointsIndex.Remove(customerOrderWaypointIndex);
-            gameManager.currentCustomers--;
-            Destroy(gameObject);
-        }
-
-        if (timerBar != null && timeSpent >= 0)
-        {
-            timeSpent -= Time.deltaTime;
-            timerBar.GetComponentInChildren<TimerBar>().UpdateTimer(timeSpent, waitingTime);
-
-            if (timeSpent <= waitingTime * 3 / 4)
-            {
-                happyIcon.SetActive(false);
-                confusedIcon.SetActive(true);
-
-                currentState = orderState.Confused;
-                StartCoroutine(ScaleIcon(confusedIcon.transform, 0.5f));
-            }
-
-            if (timeSpent <= waitingTime * 1 / 2)
-            {
-                confusedIcon.SetActive(false);
-                angryIcon.SetActive(true);
-
-                currentState = orderState.Angry;
-                StartCoroutine(ScaleIcon(angryIcon.transform, 0.5f));
-            }
-
-            ordersNumber.text = $"x{order.Count}";
-        }
     }
 
     private IEnumerator MoveToWaypoints()
@@ -125,11 +112,19 @@ public class Customer : MonoBehaviour, IInteractable
                 {
                     transform.position = Vector3.MoveTowards(transform.position, waypoint.position, 10f * Time.deltaTime);
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(waypoint.position - transform.position), 10f * Time.deltaTime);
-                    yield return null;
-                }
-                else
-                {
-                    yield return null;
+
+                    if (waypoint == destroyPoint)
+                    {
+                        if (!hasReceivedOrder && !hasLostHat)
+                        {
+                            hasLostHat = true;
+                            gameManager.LoseHat();
+                        }
+
+                        modelAnimator.SetBool("isWalking", true);
+                        Destroy(timerBar);
+                        Destroy(orderCanvas);
+                    }
                 }
 
                 if (waypoint == orderPoint && transform.position == waypoint.position)
@@ -139,66 +134,94 @@ public class Customer : MonoBehaviour, IInteractable
                     timerBar = Instantiate(timerBarPrefab, transform.position + new Vector3(1.42f, 11, 0), Quaternion.identity, transform);
                     orderCanvas = Instantiate(orderCanvasPrefab, transform.position + new Vector3(0, 10, 0), Quaternion.identity, transform);
 
-                    foreach (Transform transform in orderCanvas.transform)
-                    {
-                        switch (transform.tag)
-                        {
-                            case "Happy Icon":
-                                happyIcon = transform.gameObject;
-                                break;
-                            case "Confused Icon":
-                                confusedIcon = transform.gameObject;
-                                break;
-                            case "Angry Icon":
-                                angryIcon = transform.gameObject;
-                                break;
-                            case "Hamburger Icon":
-                                hamburgerIcon = transform.gameObject;
-                                break;
-                            case "Fries Icon":
-                                friesIcon = transform.gameObject;
-                                break;
-                            case "Soda Icon":
-                                sodaIcon = transform.gameObject;
-                                break;
-                            case "Salad Icon":
-                                saladIcon = transform.gameObject;
-                                break;
-                            case "Orders Number":
-                                ordersNumber = transform.GetComponent<TextMeshProUGUI>();
-                                break;
-                        }
-                    }
+                    GetIconReferences();
 
-                    switch (order[0])
-                    {
-                        case "Hamburger":
-                            hamburgerIcon.SetActive(true);
-                            break;
-                        case "Fries":
-                            friesIcon.SetActive(true);
-                            break;
-                        case "Soda":
-                            sodaIcon.SetActive(true);
-                            break;
-                        case "Salad":
-                            saladIcon.SetActive(true);
-                            break;
-                    }
+                    UpdateOrderIcon();
                 }
-                else if (waypoint == destroyPoint && (hasReceivedOrder || timeSpent <= 0))
-                {
-                    if (!hasReceivedOrder && !hasLostHat)
-                    {
-                        hasLostHat = true;
-                        gameManager.LoseHat();
-                    }
 
-                    modelAnimator.SetBool("isWalking", true);
-                    Destroy(timerBar);
-                    Destroy(orderCanvas);
-                }
+                yield return null;
             }
+        }
+    }
+
+    private void GetIconReferences()
+    {
+        foreach (Transform transform in orderCanvas.transform)
+        {
+            switch (transform.tag)
+            {
+                case "Happy Icon":
+                    happyIcon = transform.gameObject;
+                    break;
+                case "Confused Icon":
+                    confusedIcon = transform.gameObject;
+                    break;
+                case "Angry Icon":
+                    angryIcon = transform.gameObject;
+                    break;
+                case "Hamburger Icon":
+                    hamburgerIcon = transform.gameObject;
+                    break;
+                case "Fries Icon":
+                    friesIcon = transform.gameObject;
+                    break;
+                case "Soda Icon":
+                    sodaIcon = transform.gameObject;
+                    break;
+                case "Salad Icon":
+                    saladIcon = transform.gameObject;
+                    break;
+                case "Orders Number":
+                    ordersNumber = transform.GetComponent<TextMeshProUGUI>();
+                    break;
+            }
+        }
+    }
+
+    private void UpdateOrderIcon()
+    {
+        switch (order[0])
+        {
+            case "Hamburger":
+                hamburgerIcon.SetActive(true);
+                break;
+            case "Fries":
+                friesIcon.SetActive(true);
+                break;
+            case "Soda":
+                sodaIcon.SetActive(true);
+                break;
+            case "Salad":
+                saladIcon.SetActive(true);
+                break;
+        }
+    }
+
+    private void DestroyCustomer()
+    {
+        gameManager.activeCustomerWaypointsIndex.Remove(customerOrderWaypointIndex);
+        gameManager.currentCustomers--;
+        Destroy(gameObject);
+    }
+
+    private void ManageCustomerEmotion()
+    {
+        if (timeSpent <= waitingTime * 3 / 4)
+        {
+            happyIcon.SetActive(false);
+            confusedIcon.SetActive(true);
+
+            currentState = orderState.Confused;
+            StartCoroutine(ScaleIcon(confusedIcon.transform, 0.5f));
+        }
+
+        if (timeSpent <= waitingTime * 1 / 2)
+        {
+            confusedIcon.SetActive(false);
+            angryIcon.SetActive(true);
+
+            currentState = orderState.Angry;
+            StartCoroutine(ScaleIcon(angryIcon.transform, 0.5f));
         }
     }
 

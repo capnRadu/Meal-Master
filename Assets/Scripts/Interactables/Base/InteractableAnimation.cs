@@ -14,6 +14,14 @@ public class InteractableAnimation : MonoBehaviour
         interactableTransform = GetComponent<Transform>();
     }
 
+    void OnMouseDown()
+    {
+        if (!isAnimating && Time.timeScale != 0)
+        {
+            AnimateIngredient();
+        }
+    }
+
     public void AnimateIngredient()
     {
         StartCoroutine(Animate());
@@ -47,13 +55,5 @@ public class InteractableAnimation : MonoBehaviour
         interactableTransform.localScale = originalScale;
 
         isAnimating = false;
-    }
-
-    void OnMouseDown()
-    {
-        if (!isAnimating && Time.timeScale != 0)
-        {
-            AnimateIngredient();
-        }
     }
 }

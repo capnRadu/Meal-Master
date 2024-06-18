@@ -9,7 +9,7 @@ public class BasicIngredient : MonoBehaviour, IInteractable
 
     public GameObject ingredientPrefab;
 
-    private void Start()
+    protected virtual void Start()
     {
         playerController = FindObjectOfType<PlayerController>();
     }

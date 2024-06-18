@@ -27,6 +27,11 @@ public class PlayerController : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
     }
 
+    private void Start()
+    {
+        agent.speed = Upgrades.Instance.Speed.upgradeAmount;
+    }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0) && Time.timeScale != 0)
@@ -199,13 +204,13 @@ public class PlayerController : MonoBehaviour
                     switch (_customer.currentState)
                     {
                         case Customer.orderState.Happy:
-                            Upgrades.Instance.AddMoney(_customer.happyOrderMoney);
+                            Upgrades.Instance.AddMoney(_customer.happyOrderMoney + _customer.happyOrderMoney * Upgrades.Instance.Money.upgradeAmount / 100);
                             break;
                         case Customer.orderState.Confused:
-                            Upgrades.Instance.AddMoney(_customer.confusedOrderMoney);
+                            Upgrades.Instance.AddMoney(_customer.confusedOrderMoney + _customer.confusedOrderMoney * Upgrades.Instance.Money.upgradeAmount / 100);
                             break;
                         case Customer.orderState.Angry:
-                            Upgrades.Instance.AddMoney(_customer.angryOrderMoney);
+                            Upgrades.Instance.AddMoney(_customer.angryOrderMoney + _customer.angryOrderMoney * Upgrades.Instance.Money.upgradeAmount / 100);
                             break;
                     }
                 }

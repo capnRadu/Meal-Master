@@ -60,4 +60,9 @@ public class Menus : MonoBehaviour
 
         Debug.Log(DifficultyManager.Instance.currentDifficulty);
     }
+
+    public void UpdateMoneyText()
+    {
+        Upgrades.Instance.UpdatePlayerMoneyText();
+    }
 }

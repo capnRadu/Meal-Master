@@ -9,6 +9,7 @@ public class Upgrades : MonoBehaviour
 {
     public static Upgrades Instance { get; private set; }
 
+    [NonSerialized] public int collectedMoney = 0;
     private int playerMoney = 0;
     public int PlayerMoney
     {
@@ -21,6 +22,57 @@ public class Upgrades : MonoBehaviour
 
     private TextMeshProUGUI playerMoneyText;
 
+    // Upgrades values
+    public class Upgrade
+    {
+        public string name;
+        public int level;
+        public int upgradeAmount;
+        public int upgradeCost;
+    }
+
+    public Upgrade Grill = new Upgrade
+    {
+        name = "Grill",
+        level = 0,
+        upgradeAmount = 0,
+        upgradeCost = 100
+    };
+
+    public Upgrade Fryer = new Upgrade
+    {
+        name = "Fryer",
+        level = 0,
+        upgradeAmount = 0,
+        upgradeCost = 80
+    };
+
+    public Upgrade Soda = new Upgrade
+    {
+        name = "Soda",
+        level = 0,
+        upgradeAmount = 0,
+        upgradeCost = 50
+    };
+
+    public Upgrade Money = new Upgrade
+    {
+        name = "Money",
+        level = 0,
+        upgradeAmount = 0,
+        upgradeCost = 350
+    };
+
+    public Upgrade Speed = new Upgrade
+    {
+        name = "Speed",
+        level = 0,
+        upgradeAmount = 10,
+        upgradeCost = 120
+    };
+
+    [NonSerialized] public List<Upgrade> upgrades = new List<Upgrade>();
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -31,6 +83,18 @@ public class Upgrades : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
+        }
+    }
+
+    private void Start()
+    {
+        if (upgrades.Count == 0)
+        {
+            upgrades.Add(Grill);
+            upgrades.Add(Fryer);
+            upgrades.Add(Soda);
+            upgrades.Add(Money);
+            upgrades.Add(Speed);
         }
     }
 
@@ -46,17 +110,32 @@ public class Upgrades : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        UpdatePlayerMoneyText();
+    }
+
+    public void UpdatePlayerMoneyText()
+    {
         var text = GameObject.FindWithTag("Player Money");
 
         if (text != null)
         {
             playerMoneyText = text.GetComponent<TextMeshProUGUI>();
-            playerMoneyText.text = playerMoney.ToString();
+
+            if (SceneManager.GetActiveScene().name == "MainMenu")
+            {
+                playerMoneyText.text = playerMoney.ToString();
+            }
+            else
+            {
+                collectedMoney = 0;
+                playerMoneyText.text = collectedMoney.ToString();
+            }
         }
     }
 
     public void AddMoney(int amount)
     {
+        collectedMoney += amount;
         playerMoney += amount;
         StartCoroutine(TextAnimation(playerMoneyText, amount));
     }

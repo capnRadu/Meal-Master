@@ -13,6 +13,11 @@ public class Patty : MonoBehaviour
     [SerializeField] private GameObject timerBarPrefab;
     [NonSerialized] public GameObject timerBar;
 
+    private void Start()
+    {
+        timeToCook -= timeToCook * Upgrades.Instance.Grill.upgradeAmount / 100;
+    }
+
     private void Update()
     {
         if (transform.parent.parent.tag == "Grill" && !isCooked)

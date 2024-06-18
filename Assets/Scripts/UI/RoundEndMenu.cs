@@ -11,6 +11,6 @@ public class RoundEndMenu : MonoBehaviour
     private void Start()
     {
         roundReachedText.text = $"Round Reached:\r\n{FindObjectOfType<GameManager>().round}";
-        gainedMoneyText.text = $"Gained Money:\r\n{Upgrades.Instance.PlayerMoney}";
+        gainedMoneyText.text = $"Gained Money:\r\n{Upgrades.Instance.collectedMoney}";
     }
 }

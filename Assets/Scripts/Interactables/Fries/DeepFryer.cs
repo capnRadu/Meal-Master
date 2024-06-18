@@ -19,6 +19,12 @@ public class DeepFryer : BasicIngredient
 
     [SerializeField] private AudioSource fryerSfx;
 
+    protected override void Start()
+    {
+        base.Start();
+        timeToCook -= timeToCook * Upgrades.Instance.Fryer.upgradeAmount / 100;
+    }
+
     private void Update()
     {
         if (startFryer)

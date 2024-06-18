@@ -16,6 +16,12 @@ public class SodaMachine : BasicIngredient
 
     [SerializeField] private AudioSource sodaPourSfx;
 
+    protected override void Start()
+    {
+        base.Start();
+        timeToCook -= timeToCook * Upgrades.Instance.Soda.upgradeAmount / 100;
+    }
+
     private void Update()
     {
         if (!isRefilled)

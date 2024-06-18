@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentRoundHudText;
     private bool isStartingNewRound = false;
 
+    [SerializeField] private GameObject postProcessingVolume;
+
     private void Start()
     {
         switch (DifficultyManager.Instance.currentDifficulty)
@@ -47,6 +49,8 @@ public class GameManager : MonoBehaviour
                 spawnRate = 6f;
                 break;
         }
+
+        postProcessingVolume.SetActive(DifficultyManager.Instance.effectsEnabled);
 
         NewRound();
     }

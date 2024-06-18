@@ -12,6 +12,8 @@ public class DifficultyManager : MonoBehaviour
 
     [NonSerialized] public bool expertLocked = true;
 
+    public bool effectsEnabled = true;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)

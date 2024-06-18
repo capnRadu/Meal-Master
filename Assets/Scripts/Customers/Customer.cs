@@ -111,7 +111,7 @@ public class Customer : MonoBehaviour, IInteractable
                 if (waypoint != destroyPoint || (waypoint == destroyPoint && (hasReceivedOrder || timeSpent <= 0)))
                 {
                     transform.position = Vector3.MoveTowards(transform.position, waypoint.position, 10f * Time.deltaTime);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(waypoint.position - transform.position), 10f * Time.deltaTime);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(waypoint.position - transform.position), 4f * Time.deltaTime);
 
                     if (waypoint == destroyPoint)
                     {

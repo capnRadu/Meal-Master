@@ -13,6 +13,8 @@ public class Patty : MonoBehaviour
     [SerializeField] private GameObject timerBarPrefab;
     [NonSerialized] public GameObject timerBar;
 
+    [SerializeField] private Material cookedMaterial;
+
     private void Start()
     {
         timeToCook -= timeToCook * Upgrades.Instance.Grill.upgradeAmount / 100;
@@ -34,6 +36,7 @@ public class Patty : MonoBehaviour
             if (timeSpent >= timeToCook)
             {
                 isCooked = true;
+                GetComponent<MeshRenderer>().material = cookedMaterial;
             }
         }
     }

@@ -56,6 +56,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerBarPrefab: {fileID: 7197679106672004280, guid: 779a24622f70a7b4885277acc10bf092,
     type: 3}
+  cookedMaterial: {fileID: 5002920331295474684, guid: a98208e7c86d19e4e8e141ab1820d821,
+    type: 3}
 --- !u!23 &3318090723357132936
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -76,7 +78,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5002920331295474684, guid: a98208e7c86d19e4e8e141ab1820d821, type: 3}
+  - {fileID: 2100000, guid: 8af25ef9f25a4da40bd5f24e06e29952, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

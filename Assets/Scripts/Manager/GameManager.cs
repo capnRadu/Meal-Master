@@ -26,10 +26,13 @@ public class GameManager : MonoBehaviour
 
     private List<string> orders = new List<string> { "Hamburger", "Fries", "Soda", "Salad" };
 
-    [SerializeField] private List<GameObject> chefHats = new List<GameObject>();
+    public List<GameObject> chefHats;
+    [NonSerialized] public int hatIndex = 2;
     [SerializeField] private AudioSource failSfx;
     [SerializeField] private GameObject roundEndMenu;
-    [SerializeField] private GameObject pauseButton;
+    public GameObject pauseButton;
+    public GameObject settingsButton;
+    public GameObject adMenu;
 
     [NonSerialized] public int round = 0;
     private int customersPerRound = 4;
@@ -190,10 +193,10 @@ public class GameManager : MonoBehaviour
 
     public void LoseHat(Customer _customer)
     {
-        if (chefHats.Count > 0)
+        if (hatIndex > -1)
         {
             failSfx.Play();
-            StartCoroutine(DeactivateIcon(chefHats[chefHats.Count - 1].transform));
+            StartCoroutine(DeactivateIcon(chefHats[hatIndex].transform));
 
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("orderName", _customer.order[0]);
@@ -242,22 +245,36 @@ public class GameManager : MonoBehaviour
 
         if (icon != null)
         {
-            Destroy(icon.gameObject);
-            chefHats.RemoveAt(chefHats.Count - 1);
+            chefHats[hatIndex].SetActive(false);
+            hatIndex--;
 
-            if (chefHats.Count == 0)
+            if (hatIndex == -1)
             {
                 pauseButton.GetComponent<PauseButton>().PauseGame(false);
                 pauseButton.SetActive(false);
-                roundEndMenu.SetActive(true);
-
-                Dictionary<string, object> parameters = new Dictionary<string, object>();
-                parameters.Add("currentRound", round);
-                parameters.Add("collectedMoney", Upgrades.Instance.collectedMoney);
-                parameters.Add("playerTotalMoney", Upgrades.Instance.PlayerMoney);
-                AnalyticsService.Instance.CustomData("gameOver", parameters);
-                AnalyticsService.Instance.Flush();
+                settingsButton.SetActive(false);
+                adMenu.SetActive(true);
             }
         }
+    }
+
+    public void WatchAd(bool watchAd)
+    {
+        if (watchAd)
+        {
+            AdsManager.Instance.rewardedAds.ShowRewardedAd();
+        }
+        else
+        {
+            adMenu.SetActive(false);
+            roundEndMenu.SetActive(true);
+
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("currentRound", round);
+            parameters.Add("collectedMoney", Upgrades.Instance.collectedMoney);
+            parameters.Add("playerTotalMoney", Upgrades.Instance.PlayerMoney);
+            AnalyticsService.Instance.CustomData("gameOver", parameters);
+            AnalyticsService.Instance.Flush();
+        }   
     }
 }

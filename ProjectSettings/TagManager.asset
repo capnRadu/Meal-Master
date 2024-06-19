@@ -29,6 +29,8 @@ TagManager:
   - Opt In Button
   - Delete Data Button
   - Opt Out Button
+  - Pause Button
+  - Ad Menu
   layers:
   - Default
   - TransparentFX

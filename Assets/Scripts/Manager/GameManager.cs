@@ -1,8 +1,11 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Services.Analytics;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -90,6 +93,12 @@ public class GameManager : MonoBehaviour
         currentRoundPanelText.text = "Round " + round;
         currentRoundHudText.text = "Round " + round;
         StartCoroutine(RoundPanel(roundPanel.transform));
+
+        Dictionary<string, object> parameters = new Dictionary<string, object>();
+        parameters.Add("currentRound", round);
+        parameters.Add("gameMode", DifficultyManager.Instance.currentDifficulty.ToString());
+        AnalyticsService.Instance.CustomData("roundReached", parameters);
+        AnalyticsService.Instance.Flush();
     }
 
     private IEnumerator RoundPanel(Transform panel)
@@ -179,12 +188,17 @@ public class GameManager : MonoBehaviour
         isSpawning = false;
     }
 
-    public void LoseHat()
+    public void LoseHat(Customer _customer)
     {
         if (chefHats.Count > 0)
         {
             failSfx.Play();
             StartCoroutine(DeactivateIcon(chefHats[chefHats.Count - 1].transform));
+
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("orderName", _customer.order[0]);
+            AnalyticsService.Instance.CustomData("failedOrder", parameters);
+            AnalyticsService.Instance.Flush();
         }
     }
 
@@ -236,6 +250,13 @@ public class GameManager : MonoBehaviour
                 pauseButton.GetComponent<PauseButton>().PauseGame(false);
                 pauseButton.SetActive(false);
                 roundEndMenu.SetActive(true);
+
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("currentRound", round);
+                parameters.Add("collectedMoney", Upgrades.Instance.collectedMoney);
+                parameters.Add("playerTotalMoney", Upgrades.Instance.PlayerMoney);
+                AnalyticsService.Instance.CustomData("gameOver", parameters);
+                AnalyticsService.Instance.Flush();
             }
         }
     }

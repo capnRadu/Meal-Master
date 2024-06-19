@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Services.Analytics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -104,5 +105,12 @@ public class UpgradeStandard : MonoBehaviour
         {
            upgradeButtonText.text = "Maxed";
         }
+
+        Dictionary<string, object> parameters = new Dictionary<string, object>();
+        parameters.Add("upgradeName", upgradeName);
+        parameters.Add("upgradeLevel", level);
+        parameters.Add("playerTotalMoney", Upgrades.Instance.PlayerMoney);
+        AnalyticsService.Instance.CustomData("upgradePurchase", parameters);
+        AnalyticsService.Instance.Flush();
     }
 }

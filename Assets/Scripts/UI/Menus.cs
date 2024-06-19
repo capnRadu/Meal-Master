@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Analytics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -48,13 +50,26 @@ public class Menus : MonoBehaviour
 
     public void SetDifficulty(int difficulty)
     {
+        Dictionary<string, object> parameters = new Dictionary<string, object>();
+
         switch (difficulty)
         {
             case 0:
                 DifficultyManager.Instance.currentDifficulty = difficultyMode.Novice;
+
+                parameters.Add("gameMode", DifficultyManager.Instance.currentDifficulty.ToString());
+                AnalyticsService.Instance.CustomData("chooseGameMode", parameters);
+                AnalyticsService.Instance.Flush();
                 break;
             case 1:
-                DifficultyManager.Instance.currentDifficulty = difficultyMode.Expert;
+                if (!DifficultyManager.Instance.expertLocked)
+                {
+                    DifficultyManager.Instance.currentDifficulty = difficultyMode.Expert;
+
+                    parameters.Add("gameMode", DifficultyManager.Instance.currentDifficulty.ToString());
+                    AnalyticsService.Instance.CustomData("chooseGameMode", parameters);
+                    AnalyticsService.Instance.Flush();
+                }
                 break;
         }
 

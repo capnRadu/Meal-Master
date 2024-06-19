@@ -24,7 +24,7 @@ public class Customer : MonoBehaviour, IInteractable
     private bool hasLostHat = false;
 
     private float waitingTime = 20;
-    private float timeSpent = 20;
+    [NonSerialized] public float timeSpent = 20;
     [SerializeField] private GameObject timerBarPrefab;
     [NonSerialized] public GameObject timerBar;
 
@@ -118,7 +118,7 @@ public class Customer : MonoBehaviour, IInteractable
                         if (!hasReceivedOrder && !hasLostHat)
                         {
                             hasLostHat = true;
-                            gameManager.LoseHat();
+                            gameManager.LoseHat(this);
                         }
 
                         modelAnimator.SetBool("isWalking", true);

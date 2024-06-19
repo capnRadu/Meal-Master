@@ -25,6 +25,10 @@ TagManager:
   - Orders Number
   - Customer
   - Tap Circle
+  - Consent Menu
+  - Opt In Button
+  - Delete Data Button
+  - Opt Out Button
   layers:
   - Default
   - TransparentFX

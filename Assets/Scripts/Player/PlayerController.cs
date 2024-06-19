@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Analytics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -213,11 +214,23 @@ public class PlayerController : MonoBehaviour
                             Upgrades.Instance.AddMoney(_customer.angryOrderMoney + _customer.angryOrderMoney * Upgrades.Instance.Money.upgradeAmount / 100);
                             break;
                     }
+
+                    Dictionary<string, object> parameters = new Dictionary<string, object>();
+                    parameters.Add("customerEmotionState", _customer.currentState.ToString());
+                    parameters.Add("customerTimeLeft", _customer.timeSpent);
+                    AnalyticsService.Instance.CustomData("completedOrder", parameters);
+                    AnalyticsService.Instance.Flush();
                 }
             }
             else
             {
                 errorSfx.Play();
+
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("orderName", _order[0]);
+                parameters.Add("servedOrder", activeInteractable.tag);
+                AnalyticsService.Instance.CustomData("wrongOrder", parameters);
+                AnalyticsService.Instance.Flush();
             }
         }
     }

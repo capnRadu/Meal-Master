@@ -27,9 +27,19 @@ public class Menus : MonoBehaviour
         }
     }
 
-    public void Quit()
+    public void Quit(bool deleteSaves)
     {
-       Application.Quit();
+        if (deleteSaves)
+        {
+            PlayerPrefs.DeleteAll();
+            Debug.Log("Game data deleted");
+        }
+        else
+        {
+            SaveLoadManager.Instance.SaveGame();
+        }
+
+        Application.Quit();
     }
 
     private IEnumerator LoadSceneAsync(int sceneId)

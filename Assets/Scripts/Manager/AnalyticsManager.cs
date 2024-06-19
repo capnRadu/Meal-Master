@@ -27,12 +27,20 @@ public class AnalyticsManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
 
-        StartCoroutine(ShowConsentMenu());
+        if (!PlayerPrefs.HasKey("gameSaved"))
+        {
+            StartCoroutine(ShowConsentMenu());
+        }
     }
 
     async void Start()
     {
         await UnityServices.InitializeAsync();
+        
+        if (userGaveConsent)
+        {
+            AnalyticsService.Instance.StartDataCollection();
+        }
     }
 
     private IEnumerator ShowConsentMenu()
